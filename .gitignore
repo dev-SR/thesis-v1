@@ -163,3 +163,4 @@ cython_debug/
 *.txt
 test.py
 data
+*.svg

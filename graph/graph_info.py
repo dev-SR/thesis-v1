@@ -127,7 +127,7 @@ class GraphManager:
     # 		# if id in levels[i]:
     # 		# return True
 
-    def getPaths(self, s, d, unique=False) -> List[List[str]]:
+    def getPaths(self, s, d, unique=True) -> List[List[str]]:
         self.path = []
         self.ans = []
 
