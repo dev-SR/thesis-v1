@@ -677,3 +677,32 @@ def getWeightedKeyPhrasesUsingTeKET(paper_text_full_path, Top_n=15):
             final_node_list, candidate_phrases_count_lsaf, text)
 
         return Keyphrases[:Top_n]
+
+
+def getWeightedKeyPhrasesUsingTeKETReadText(text, Top_n=15):
+    treemanager = TreeManager()
+    ntf = NounTFCalculation()
+    mu = 2
+    lsaf = 4
+    final_node_list = []
+    # if len(text) > 1000000 - 1:
+    #     text = text[:1000000 - 1]
+    extract_candidate = ExtractCandidate(text)
+    candidate_phrases = extract_candidate.CandidatePhraseHandler()
+    candidate_phrases_count_lsaf = []
+    for x in range(0, len(candidate_phrases), 1):
+        if candidate_phrases.count(candidate_phrases[x]) > lsaf:
+            candidate_phrases_count_lsaf.append(candidate_phrases[x])
+
+    NounTF_tuple = ntf.NounTF(candidate_phrases_count_lsaf)
+    treemanager.ProcessCandidatePhrase(
+        NounTF_tuple, candidate_phrases_count_lsaf, mu, final_node_list)
+
+    Keyphrases = treemanager.ReturnKeyPhrases(
+        final_node_list, candidate_phrases_count_lsaf, text)
+
+    # return Keyphrases[:Top_n]
+    return Keyphrases
+
+
+# print(getWeightedKeyPhrasesUsingTeKETReadText())

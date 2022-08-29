@@ -28,5 +28,5 @@ def getWeightedKeyPhrasesUsingMultipartiteRank(paper_text_full_path, Top_n=15):
 
         # N-best selection, keyphrases contains the 10 highest scored candidates as
         # (keyphrase, score) tuples
-        keyphrases = extractor.get_n_best(n=Top_n)
+        keyphrases = extractor.get_n_best(n=Top_n, stemming=True)
         return keyphrases

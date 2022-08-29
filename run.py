@@ -41,14 +41,17 @@ def runManualConversions():
 
 def runAutomatedConversions():
     n = args.n
-    pdf_path = os.path.join(os.getcwd(), "data\\papers")
-    error_path = os.path.join(os.getcwd(), "data\\info")
+    cwd = os.getcwd()
+    pdf_path = os.path.join(cwd, "data\\papers")
+    txt_path = os.path.join(cwd, "data\\papers\\text_raw")
+
+    error_path = os.path.join(cwd, "data\\info")
 
     pdf_files_id_list = [f.name.split(".")[0] for f in os.scandir(
         pdf_path) if f.name.endswith(".pdf")]
 
     text_files_id_list = [f.name.split(".")[0] for f in os.scandir(
-        pdf_path) if f.name.endswith(".txt")]
+        txt_path) if f.name.endswith(".txt")]
 
     text_yet_to_be_converted = list(
         set(pdf_files_id_list) - set(text_files_id_list))
@@ -72,9 +75,10 @@ def runAutomatedConversions():
         done = withLoaderDictAsParam(convertPdfToText, {
             "ID": ID,
             "PDF_PATH": pdf_path,
-            "OUTPUT_PATH": pdf_path,
+            "OUTPUT_PATH": txt_path,
             "ERROR_PATH": error_path,
-            "METHOD": "pypdf2"
+            "CLEAN": False,
+            "METHOD": "pymupdf"
         }, "Converting PDF to Text")
         if done:
             console.log(f"[green]Converted:  {ID}[/]")

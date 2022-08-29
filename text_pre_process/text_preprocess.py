@@ -21,7 +21,7 @@ SPACE_BEFORE_FULLSTOPS = re.compile('\s\.')
 MORE_THAN_ONE_FULLSTOPS_RE = re.compile('\.\.+')
 
 
-def cleanText(text):
+def cleanText(text, stem=True):
     text = HYPHENATED_RE.sub('', text)    # joining Hyphenated words
     text = REPLACE_PUNCTUATION_BY_SPACE_RE.sub(' ', text)
     text = NUMBER_RE.sub('', text)
@@ -40,13 +40,19 @@ def cleanText(text):
     # Remove Stop Words
     # words = [w for w in words if not w in STOPWORDS]
 
-    # # Stemming
-    stemmed_words = [ps.stem(w) for w in words]
-
-    # # Join the words back into one string separated by space,
-    stemmed_sen = ' '.join(stemmed_words)
-    # removing space before full stops
-    stemmed_sen = SPACE_BEFORE_FULLSTOPS.sub('.', stemmed_sen)
-    # removing more than one full stop
-    stemmed_sen = MORE_THAN_ONE_FULLSTOPS_RE.sub('', stemmed_sen)
-    return stemmed_sen
+    if stem:
+        # # Stemming
+        stemmed_words = [ps.stem(w) for w in words]
+        # # Join the words back into one string separated by space,
+        stemmed_sen = ' '.join(stemmed_words)
+        # removing space before full stops
+        stemmed_sen = SPACE_BEFORE_FULLSTOPS.sub('.', stemmed_sen)
+        # removing more than one full stop
+        stemmed_sen = MORE_THAN_ONE_FULLSTOPS_RE.sub('', stemmed_sen)
+        return stemmed_sen
+    else:
+        # removing space before full stops
+        text = SPACE_BEFORE_FULLSTOPS.sub('.', text)
+        # removing more than one full stop
+        text = MORE_THAN_ONE_FULLSTOPS_RE.sub('', text)
+        return text
